@@ -19,5 +19,5 @@ jobs:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       run: |
         docker tag local/varnish-prometheus-exporter squaremo/varnish-prometheus-exporter:${{ github.event.release.tag_name }}
-        echo "${DOCKER_PASSWORD}" | docker login --username ${{ secrets.DOCKER_USER }} --passwd-stdin
+        echo "${DOCKER_PASSWORD}" | docker login --username ${{ secrets.DOCKER_USER }} --password-stdin
         docker push squaremo/varnish-prometheus-exporter:${{ github.event.release.tag_name }}
