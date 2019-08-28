@@ -14,7 +14,10 @@ jobs:
       run: docker build . --file Dockerfile --tag local/varnish-prometheus-exporter
     
     - name: Push the Docker image
-      if: github.event_name == 'release' && github.event.action == 'created'
+      if: github.event_name == 'release' && github.event.action == 'published'
+      env:
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       run: |
         docker tag local/varnish-prometheus-exporter squaremo/varnish-prometheus-exporter:${{ github.event.release.tag_name }}
+        echo "${DOCKER_PASSWORD}" | docker login --username ${{ secrets.DOCKER_USER }} --passwd-stdin
         docker push squaremo/varnish-prometheus-exporter:${{ github.event.release.tag_name }}
