@@ -1,6 +1,6 @@
 name: Docker Image CI
 
-on: [push]
+on: [push, release]
 
 jobs:
 
@@ -11,4 +11,10 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag squaremo/varnish-prometheus-exporter:$(git rev-parse --short HEAD)
+      run: docker build . --file Dockerfile --tag local/varnish-prometheus-exporter
+    
+    - name: Push the Docker image
+      if: github.event_name == 'release' && github.event.action == 'created'
+      run: |
+        docker tag local/varnish-prometheus-exporter squaremo/varnish-prometheus-exporter:${GITHUB_REF}
+        docker push squaremo/varnish-prometheus-exporter:${GITHUB_REF}
