@@ -16,5 +16,5 @@ jobs:
     - name: Push the Docker image
       if: github.event_name == 'release' && github.event.action == 'created'
       run: |
-        docker tag local/varnish-prometheus-exporter squaremo/varnish-prometheus-exporter:${GITHUB_REF}
-        docker push squaremo/varnish-prometheus-exporter:${GITHUB_REF}
+        docker tag local/varnish-prometheus-exporter squaremo/varnish-prometheus-exporter:${{ github.event.release.tag_name }}
+        docker push squaremo/varnish-prometheus-exporter:${{ github.event.release.tag_name }}
